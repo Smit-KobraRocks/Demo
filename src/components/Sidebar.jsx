@@ -1,38 +1,42 @@
 import React from 'react';
-import { useAppStore } from '../store';
+
+const navItems = [
+  { label: 'Profile', href: '#profile' },
+  { label: 'Connect Dataset', href: '#connect-dataset', active: true },
+  { label: 'File Upload', href: '#file-upload' },
+  { label: 'Coin usage', href: '#coin-usage', badge: '120' },
+];
 
 const Sidebar = () => {
-  const taskGroups = useAppStore((s) => s.taskGroups);
-
   return (
-    <aside className="sidebar">
-      <div className="sidebar-top">
-        <h2 className="logo">h department</h2>
-        <div className="sidebar-actions">
-          <button className="icon-btn">⚙️</button>
-          <button className="icon-btn">+</button>
-        </div>
+    <aside className="sidebar" aria-label="Primary">
+      <div className="sidebar__header">
+        <div className="sidebar__brand">PixelGrid</div>
+        <p className="sidebar__tagline">Manage, upload, and organise every dataset in one place.</p>
       </div>
 
-      <button className="create-task">Create task</button>
+      <nav className="sidebar__nav" aria-label="Main navigation">
+        <ul>
+          {navItems.map((item) => (
+            <li key={item.label}>
+              <a
+                href={item.href}
+                className={`sidebar__link${item.active ? ' is-active' : ''}`}
+                aria-current={item.active ? 'page' : undefined}
+              >
+                <span>{item.label}</span>
+                {item.badge ? <span className="sidebar__badge">{item.badge}</span> : null}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      <div className="tasks-section">
-        <h4 className="section-title">Assigned Tasks</h4>
-        {taskGroups.map((group) => (
-          <div className="task-group" key={group.title}>
-            <h5 className="group-title">{group.title}</h5>
-            <ul>
-              {group.tasks.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div className="footer-user">
-        <div className="avatar">AS</div>
-        <span>Adam Smith</span>
+      <div className="sidebar__footer">
+        <button type="button" className="sidebar__back-btn">
+          <span aria-hidden="true">←</span>
+          Back to Home
+        </button>
       </div>
     </aside>
   );
