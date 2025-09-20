@@ -1,13 +1,14 @@
 import React from 'react';
 
 const navItems = [
-  { label: 'Profile', href: '#profile' },
-  { label: 'Connect Dataset', href: '#connect-dataset', active: true },
-  { label: 'File Upload', href: '#file-upload' },
-  { label: 'Coin usage', href: '#coin-usage', badge: '120' },
+  { label: 'Profile', key: 'profile', disabled: true },
+  { label: 'Connect Dataset', key: 'connect-dataset' },
+  { label: 'Chat', key: 'chat' },
+  { label: 'File Upload', key: 'file-upload', disabled: true },
+  { label: 'Coin usage', key: 'coin-usage', badge: '120', disabled: true },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ activePage, onNavigate }) => {
   return (
     <aside className="sidebar" aria-label="Primary">
       <div className="sidebar__header">
@@ -17,18 +18,28 @@ const Sidebar = () => {
 
       <nav className="sidebar__nav" aria-label="Main navigation">
         <ul>
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                className={`sidebar__link${item.active ? ' is-active' : ''}`}
-                aria-current={item.active ? 'page' : undefined}
-              >
-                <span>{item.label}</span>
-                {item.badge ? <span className="sidebar__badge">{item.badge}</span> : null}
-              </a>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const isActive = item.key === activePage;
+
+            return (
+              <li key={item.key}>
+                <button
+                  type="button"
+                  className={`sidebar__link${isActive ? ' is-active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                  onClick={() => {
+                    if (!item.disabled) {
+                      onNavigate?.(item.key);
+                    }
+                  }}
+                  disabled={item.disabled}
+                >
+                  <span>{item.label}</span>
+                  {item.badge ? <span className="sidebar__badge">{item.badge}</span> : null}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
