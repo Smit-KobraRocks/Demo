@@ -1,10 +1,10 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, activePage, onNavigate }) => {
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Sidebar activePage={activePage} onNavigate={onNavigate} />
       <main className="app-main" role="main">
         {children}
       </main>
